@@ -80,7 +80,7 @@ jobs:
         # docker push ${TARGET_IMAGE}
         # docker pull ${TARGET_IMAGE}
         echo "创建配置"
-        sudo /usr/bin/hcloud configure set --cli-profile=default --cli-lang=en --cli-mode=AKSK --cli-region=cn-east-2 --cli-access-key=${{ secrets.HW_ACCESS_KEY }} --cli-secret-key=${{ secrets.HW_SECRET_KEY }} --cli-agree-privacy-statement=true
+        sudo /usr/bin/hcloud configure set --cli-profile=default --cli-lang=en --cli-mode=AKSK --cli-region=cn-east-3 --cli-access-key=${{ secrets.HW_ACCESS_KEY }} --cli-secret-key=${{ secrets.HW_SECRET_KEY }} --cli-agree-privacy-statement=true
 
         echo "设置 ${BASE_IMAGE} 为公共镜像"
         RESPONSE=$(sudo /usr/bin/hcloud SWR UpdateRepo --namespace="${{ secrets.NAMESPACE }}" --repository="${BASE_IMAGE//\//%24}" --is_public=true)
