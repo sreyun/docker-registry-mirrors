@@ -1,0 +1,212 @@
+name: Kubesphere V4.1.3 Docker Image
+
+on:
+  workflow_dispatch:  # 允许手动触发
+  # schedule:
+  #   - cron: '0 0 * * 0'  # 每周日执行一次 (UTC时间)
+
+jobs:
+  sync-images:
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Login to Docker Hub
+      uses: docker/login-action@v1
+      with:
+        registry: ${{ secrets.REGISTRY }}
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
+
+    - name: Install Skopeo
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y skopeo
+        sudo curl -O https://cn-north-4-hdn-koocli.obs.cn-north-4.myhuaweicloud.com/cli/latest/huaweicloud-cli-linux-amd64.tar.gz
+        sudo tar xf huaweicloud-cli-linux-amd64.tar.gz -C /usr/bin hcloud
+        sudo rm -rf huaweicloud-cli-linux-amd64.tar.gz
+        sudo /usr/bin/hcloud configure set --cli-profile=default --cli-lang=en --cli-mode=AKSK --cli-region=cn-east-2 --cli-access-key=${{ secrets.HW_ACCESS_KEY }} --cli-secret-key=${{ secrets.HW_SECRET_KEY }} --cli-agree-privacy-statement=true
+
+    - name: Sync Images
+      env:
+        IMAGE_LIST: |
+          ## ks-core
+          docker.io/kubesphere/ks-apiserver:v4.1.3
+          docker.io/kubesphere/ks-console:v4.1.3
+          docker.io/kubesphere/ks-controller-manager:v4.1.3
+          docker.io/kubesphere/kubectl:v1.27.16
+          docker.io/kubesphere/redis:7.2.4-alpine
+          docker.io/kubesphere/haproxy:2.9.6-alpine
+          docker.io/kubesphere/ks-extensions-museum:v1.1.3
+          ## deepseek
+          docker.io/ollama/ollama:0.5.7
+          docker.io/ollama/ollama:rocm
+          docker.io/yidadaa/chatgpt-next-web:v2.16.0
+          ## devops
+          docker.io/kubesphere/devops-apiserver:v4.1.3
+          docker.io/kubesphere/devops-controller:v4.1.3
+          docker.io/kubesphere/devops-tools:v4.1.3
+          docker.io/kubesphere/devops-jenkins:v4.1.3-2.346.3
+          docker.io/jenkins/inbound-agent:4.10-2
+          docker.io/kubesphere/builder-base:v3.2.2
+          docker.io/kubesphere/builder-nodejs:v3.2.0
+          docker.io/kubesphere/builder-maven:v3.2.0
+          docker.io/kubesphere/builder-maven:v3.2.1-jdk11
+          docker.io/kubesphere/builder-python:v3.2.0
+          docker.io/kubesphere/builder-go:v3.2.0
+          docker.io/kubesphere/builder-go:v3.2.2-1.16
+          docker.io/kubesphere/builder-go:v3.2.2-1.17
+          docker.io/kubesphere/builder-go:v3.2.2-1.18
+          docker.io/kubesphere/builder-base:v3.2.2-podman
+          docker.io/kubesphere/builder-nodejs:v3.2.0-podman
+          docker.io/kubesphere/builder-maven:v3.2.0-podman
+          docker.io/kubesphere/builder-maven:v3.2.1-jdk11-podman
+          docker.io/kubesphere/builder-python:v3.2.0-podman
+          docker.io/kubesphere/builder-go:v3.2.0-podman
+          docker.io/kubesphere/builder-go:v3.2.2-1.16-podman
+          docker.io/kubesphere/builder-go:v3.2.2-1.17-podman
+          docker.io/kubesphere/builder-go:v3.2.2-1.18-podman
+          quay.io/argoproj/argocd:v2.3.3
+          quay.io/argoproj/argocd-applicationset:v0.4.1
+          ghcr.io/dexidp/dex:v2.30.2
+          docker.io/library/redis:6.2.6-alpine
+          ## gatekeeper
+          docker.io/kubesphere/gatekeeper-extension-apiserver:v1.0.2
+          docker.io/kubesphere/kubectl:v1.27.12
+          docker.io/openpolicyagent/gatekeeper:v3.14.0
+          docker.io/openpolicyagent/gatekeeper-crds:v3.14.0
+          ## gateway
+          docker.io/kubesphere/nginx-ingress-controller:v1.4.0
+          docker.io/kubesphere/gateway-apiserver:v1.0.2
+          docker.io/kubesphere/gateway-controller-manager:v1.0.2
+          docker.io/kubesphere/kubectl:v1.27.16
+          ## grafana
+          docker.io/curlimages/curl:7.85.0
+          docker.io/grafana/grafana:10.4.1
+          docker.io/library/busybox:1.31.1
+          ## kubeedge
+          docker.io/kubeedge/iptables-manager:v1.13.1
+          docker.io/kubeedge/cloudcore:v1.13.1
+          docker.io/kubeedge/controller-manager:v1.13.1
+          docker.io/kubesphere/kubeedge-proxy:v0.4.1
+          ## kubefed
+          docker.io/kubesphere/kubefed-extension:v1.0.0
+          docker.io/kubesphere/kubefed:v0.8.1
+          docker.io/kubesphere/kubectl:v1.27.4
+          ## loki
+          docker.io/kubesphere/kubectl:v1.27.12
+          docker.io/grafana/loki:3.0.0
+          docker.io/grafana/loki-helm-test:ewelch-distributed-helm-chart-17db5ee
+          docker.io/grafana/loki-canary:3.0.0
+          docker.io/nginxinc/nginx-unprivileged:1.24-alpine
+          docker.io/library/memcached:1.6.23-alpine
+          docker.io/prom/memcached-exporter:v0.14.2
+          docker.io/kiwigrid/k8s-sidecar:1.24.3
+          docker.io/minio/minio:RELEASE.2022-09-17T00-09-45Z
+          docker.io/minio/mc:RELEASE.2022-09-16T09-16-47Z
+          ## metrics-server
+          docker.io/kubesphere/metrics-server:v0.7.0
+          docker.io/kubesphere/addon-resizer:1.8.20
+          ## network
+          docker.io/kubesphere/network-extension-apiserver:v1.1.0
+          docker.io/kubesphere/network-extension-controller:v1.1.0
+          ## openpitrix
+          docker.io/kubesphere/apps-manage:v2.0.1
+          ## opensearch
+          docker.io/opensearchproject/opensearch:2.8.0
+          docker.io/library/busybox:1.35.0
+          docker.io/kubesphere/opensearch-curator:v0.0.5
+          docker.io/opensearchproject/opensearch-dashboards:2.8.0
+          ## servicemesh
+          docker.io/istio/pilot:1.16.5
+          docker.io/istio/proxyv2:1.16.5
+          docker.io/istio/istioctl:1.16.5
+          docker.io/kubesphere/kubectl:v1.27.4
+          docker.io/kubesphere/kiali-operator:v1.59.1
+          docker.io/kubesphere/kiali:v1.59
+          docker.io/jaegertracing/jaeger-operator:1.35.0
+          docker.io/jaegertracing/jaeger-agent:1.35
+          docker.io/jaegertracing/jaeger-collector:1.35
+          docker.io/jaegertracing/jaeger-query:1.35
+          docker.io/jaegertracing/jaeger-es-index-cleaner:1.35
+          docker.io/kubesphere/servicemesh-apiserver:v0.1.0
+          docker.io/kubesphere/servicemesh-controller-manager:v0.1.0
+          ## storage-utils
+          docker.io/kubesphere/storageclass-accessor:v0.2.5
+          docker.io/kubesphere/snapshot-controller:v4.2.1
+          docker.io/kubesphere/snapshotclass-controller:v0.0.1
+          docker.io/kubesphere/pvc-autoresizer:v0.3.1
+          ## tower
+          docker.io/kubesphere/tower:v0.2.1
+          docker.io/kubesphere/tower-extension:v1.0.0
+          ## vector
+          docker.io/timberio/vector:0.39.0-debian
+          docker.io/kubesphere/kubectl:v1.27.12
+          docker.io/kubesphere/vector-config:v0.2.1
+          ## whizard-alerting
+          docker.io/kubesphere/whizard-alerting-apiserver:v1.0.2
+          docker.io/kubesphere/whizard-alerting-controller-manager:v1.0.2
+          docker.io/thanosio/thanos:v0.36.1
+          docker.io/kubesphere/kubectl:v1.27.12
+          docker.io/kubesphere/cortex-tenant:v1.12.5
+          quay.io/prometheus-operator/prometheus-config-reloader:v0.75.1
+          ## whizard-events
+          docker.io/kubesphere/kube-events-exporter:v0.8.0
+          docker.io/jimmidyson/configmap-reload:v0.9.0
+          ## whizard-logging
+          docker.io/kubesphere/kubectl:v1.27.12
+          docker.io/kubesphere/log-sidecar-injector:v1.3.0
+          docker.io/jimmidyson/configmap-reload:v0.9.0
+          docker.io/elastic/filebeat:6.7.0
+          docker.io/timberio/vector:0.39.0-debian
+          docker.io/library/alpine:3.14
+          ## whizard-monitoring
+          docker.io/kubesphere/kubectl:v1.27.12
+          docker.io/kubesphere/kube-state-metrics:v2.12.0
+          docker.io/kubespheredev/kube-webhook-certgen:v20221220-controller-v1.5.1-58-g787ea74b6
+          docker.io/thanosio/thanos:v0.36.1
+          quay.io/brancz/kube-rbac-proxy:v0.18.0
+          quay.io/prometheus-operator/prometheus-config-reloader:v0.75.1
+          quay.io/prometheus-operator/prometheus-operator:v0.75.1
+          quay.io/prometheus/node-exporter:v1.8.1
+          quay.io/prometheus/prometheus:v2.51.2
+          docker.io/kubesphere/dcgm-exporter:3.3.5-3.4.0-ubuntu22.04
+          docker.io/kubesphere/process-exporter:0.5.0
+          docker.io/nginxinc/nginx-unprivileged:1.24
+          docker.io/kubesphere/calico-exporter:v0.3.0
+          docker.io/kubesphere/whizard-monitoring-helm-init:v0.1.0
+          ## whizard-notification
+          docker.io/kubesphere/kubectl:v1.27.12
+          docker.io/kubesphere/kube-rbac-proxy:v0.11.0
+          docker.io/kubesphere/alertmanager-proxy:v0.2.0
+          docker.io/kubesphere/notification-manager-operator:v2.5.2
+          docker.io/kubesphere/notification-manager:v2.5.2
+          docker.io/kubesphere/notification-tenant-sidecar:v4.0.2
+          quay.io/prometheus/alertmanager:v0.27.0
+          quay.io/prometheus-operator/prometheus-config-reloader:v0.75.1
+          ## whizard-telemetry
+          docker.io/kubesphere/whizard-telemetry-apiserver:v1.2.2
+
+      run: |
+        echo "$IMAGE_LIST" | while read -r image; do
+          [ -z "$image" ] && continue       # 跳过空行
+          [[ "$image" =~ "#" ]] && continue  # 跳过注释行
+
+          # 提取镜像名称和标签
+          dest_image="swr.cn-east-2.myhuaweicloud.com/ks/${image#*/}"
+
+          echo "Syncing $image → $dest_image"
+          skopeo copy docker://$image docker://$dest_image
+
+          if [ $? -eq 0 ]; then
+            echo "✅  Sync succeeded: $image"
+
+            repository=$(echo ${image#*/} | sed 's/\(.*\):.*/\1/')
+            sudo /usr/bin/hcloud SWR UpdateRepo --namespace="ks" --repository="${repository//\//%24}" --is_public=true
+          else
+            echo "❌  Sync failed: $image"
+            exit 1  # 失败时停止执行
+          fi
+        done
