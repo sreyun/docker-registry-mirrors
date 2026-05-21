@@ -11,8 +11,21 @@
 [![GitHub Issues](https://img.shields.io/github/issues/sreyun/docker-registry-mirrors?style=for-the-badge&logo=github)](https://github.com/sreyun/docker-registry-mirrors/issues)
 [![License](https://img.shields.io/github/license/sreyun/docker-registry-mirrors?style=for-the-badge&color=blue)](LICENSE)
 [![GitHub Sponsors](https://img.shields.io/badge/Sponsor-%E2%9D%A4%EF%B8%8B-EA4AAA?style=for-the-badge&logo=github-sponsors)](https://github.com/sponsors/sreyun)
+[![YouTube](https://img.shields.io/badge/YouTube-%E2%96%B6%EF%B8%8F-FF0000?style=for-the-badge&logo=youtube)](https://youtube.com/@sreyun-dev)
 
 </div>
+
+---
+
+## 🎬 视频教程已上线！
+
+📺 **第一集**: [5 分钟解决 Docker 镜像拉取问题 - 完整教程](https://youtube.com/@sreyun-dev) *(即将发布)*
+
+订阅 **[@sreyun-dev](https://youtube.com/@sreyun-dev)** 获取更多：
+- 🤖 AI 开发工具教程
+- 🐳 Docker/K8s 实战
+- ☁️ 云原生技术分享
+- 💻 DevOps 最佳实践
 
 ---
 
@@ -160,15 +173,11 @@ A: 为了保证服务质量：
 
 ## 🎬 视频教程
 
-> 📺 正在制作中... 
-> 
-> 订阅我的 YouTube 频道，获取：
+> 📺 订阅 [@sreyun-dev](https://youtube.com/@sreyun-dev) 获取：
 > - 🤖 AI 开发工具教程
 > - 🐳 Docker/K8s 实战
 > - ☁️ 云原生技术分享
 > - 💻 DevOps 最佳实践
-
-[🔔 订阅频道](https://youtube.com/@sreyun-dev) *(即将上线)*
 
 ---
 
