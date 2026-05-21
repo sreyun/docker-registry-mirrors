@@ -1,153 +1,228 @@
+# 🐳 Docker Registry Mirrors
+
+> **多平台容器镜像代理服务** - 支持 Docker Hub, GitHub, Google, k8s, Quay, Microsoft 等镜像仓库
+> 
+> 🤖 **AI 开发者友好** - 快速拉取 AI/ML 相关容器镜像（PyTorch, TensorFlow, CUDA 等）
+
 <div align="center">
 
-# docker-registry-mirrors
+[![GitHub stars](https://img.shields.io/github/stars/sreyun/docker-registry-mirrors?style=for-the-badge&logo=github)](https://github.com/sreyun/docker-registry-mirrors/stargazers)
+[![GitHub forks](https://img.shields.io/github/forks/sreyun/docker-registry-mirrors?style=for-the-badge&logo=github)](https://github.com/sreyun/docker-registry-mirrors/network/members)
+[![GitHub Issues](https://img.shields.io/github/issues/sreyun/docker-registry-mirrors?style=for-the-badge&logo=github)](https://github.com/sreyun/docker-registry-mirrors/issues)
+[![License](https://img.shields.io/github/license/sreyun/docker-registry-mirrors?style=for-the-badge&color=blue)](LICENSE)
+[![GitHub Sponsors](https://img.shields.io/badge/Sponsor-%E2%9D%A4%EF%B8%8B-EA4AAA?style=for-the-badge&logo=github-sponsors)](https://github.com/sponsors/sreyun)
 
-[![Auth](https://img.shields.io/badge/Auth-kubesre-ff69b4)](https://github.com/kubesre)
-[![GitHub contributors](https://img.shields.io/github/contributors/kubesre/docker-registry-mirrors)](https://github.com/kubesre/docker-registry-mirrors/graphs/contributors)
-[![GitHub Issues](https://img.shields.io/github/issues/kubesre/docker-registry-mirrors.svg)](https://github.com/kubesre/docker-registry-mirrors/issues)
-[![GitHub Pull Requests](https://img.shields.io/github/issues-pr/kubesre/docker-registry-mirrors)](https://github.com/kubesre/docker-registry-mirrors/pulls)
-[![GitHub Pull Requests](https://img.shields.io/github/stars/kubesre/docker-registry-mirrors)](https://github.com/kubesre/docker-registry-mirrors/stargazers)
-[![HitCount](https://views.whatilearened.today/views/github/kubesre/docker-registry-mirrors.svg)](https://github.com/kubesre/docker-registry-mirrors)
-[![GitHub license](https://img.shields.io/github/license/kubesre/docker-registry-mirrors)](https://github.com/kubesre/docker-registry-mirrors/blob/main/LICENSE)
-<p> 多平台容器镜像代理服务,支持 Docker Hub, GitHub, Google, k8s, Quay, Microsoft 等镜像仓库. </p>
+</div>
 
-<img src="https://cdn.jsdelivr.net/gh/kubesre/tu@main/img/image_20240420_214408.gif" width="800"  height="3">
-</div><br>
+---
 
-本项目灵感来自：[Thanks-Mirror](https://github.com/eryajf/Thanks-Mirror)，该项目分享的是docker镜像直接可用，质量好，速度快的镜像
+## 🎯 为什么需要这个项目？
 
-在此，对那些提供公共仓库镜像的企业或组织，致以感谢🫡！
+在中国大陆访问 Docker Hub、Google Container Registry 等海外镜像源经常遇到：
+- ❌ 连接超时
+- ❌ 下载速度极慢
+- ❌ 镜像拉取失败
 
-📢 注意：近日一些提供公有镜像仓库的组织,宣布因监管要求被下架,需要自行核实镜像加速地址的有效性,如果失效了,或者发现了新的镜像也欢迎告诉我们。目前已知提供公有镜像服务比较好的项目：[public-image-mirror](https://github.com/DaoCloud/public-image-mirror)
+本项目提供**公益镜像代理服务**，让你可以：
+- ✅ **快速拉取** AI/ML 开发所需的容器镜像
+- ✅ **一键配置** Docker daemon
+- ✅ **支持多个**主流镜像仓库
 
-# 赞助商
-## [永久免费的gpt](https://chat.gbfeng.com/)
+---
 
+## 🤖 AI/ML 开发者快速使用
 
-# 强烈推荐 🚀单镜像加速通道
-📢 注意：目前仅支持同步AMD架构的镜像
+### 拉取 AI 开发常用镜像
 
-您可以根据 [镜像同步 Issue 模板](https://github.com/kubesre/docker-registry-mirrors/issues/new?assignees=&labels=sync+image&projects=&template=sync-image.yml) 创建一个 Issue, 将会有机器人帮您优先主动同步指定的镜像
-同步结果会在 Issue 中更新,为了节约资源[这里可以查询已经同步过的镜像](https://dockerimage.gbfeng.com)
-<details>
-<summary><strong>查看同步截图案例</strong></summary>
-<div>
-  
-![](https://images.gbfeng.com/images/202406201502643.png)
-  
-![](https://images.gbfeng.com/images/202406201459614.png)
+```bash
+# PyTorch (GPU)
+docker pull kubesre.xyz/pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
 
-</details>
+# TensorFlow (GPU)
+docker pull kubesre.xyz/tensorflow/tensorflow:2.14.0-gpu
 
+# Jupyter AI Stack
+docker pull kubesre.xyz/jupyter/datascience-notebook:latest
 
+# NVIDIA CUDA
+docker pull kubesre.xyz/nvidia/cuda:12.2.0-runtime-ubuntu22.04
 
-# 快速搭建自己的镜像加速仓库
-
-[搭建自己的镜像加速仓库](dockerproxy/README.md)
-
-
-
-# 公益仓库
-由于很多仓库都失效了，所以我们搭建了公益的镜像仓库，供大家下载使用。
-镜像仓库的带宽有限，所以，推荐自行搭建
-- 当前 IP 限流 20r/m (每分钟20个请求)
-
-[搭建自己的镜像加速仓库](dockerproxy/README.md)
-```
-kubesre.xyz
-```
-## 使用方法
-**增加前缀 (推荐方式)。比如：**
-```
-k8s.gcr.io/coredns/coredns => kubesre.xyz/k8s.gcr.io/coredns/coredns
-```
-**或者 支持的镜像仓库 的 前缀替换 就可以使用。比如：**
-
-```
-k8s.gcr.io/coredns/coredns => k8s-gcr.kubesre.xyz/coredns/coredns
+# HuggingFace Transformers
+docker pull kubesre.xyz/huggingface/transformers-pytorch-gpu:latest
 ```
 
+> 💡 **提示**: 只需在原镜像前加 `kubesre.xyz/` 前缀即可！
 
-## 支持前缀替换的 Registry
+---
 
-前缀替换的 Registry 的规则, 这是人工配置的, 有需求提 Issue.**
+## 🚀 快速开始
 
-📢 注意： dockerhub仓库的别名：`docker.kubesre.xyz`被墙，更换成：`dhub.kubesre.xyz`
+### 方法一：前缀替换（推荐）
 
-| 源站	                 | 替换为              |
-|--------------------------|------------------------------|
-| cr.l5d.io                | l5d.kubesre.xyz               |
-| docker.elastic.co        | elastic.kubesre.xyz           |
-| docker.io                | dhub.kubesre.xyz         |
-| gcr.io                   | gcr.kubesre.xyz               |
-| ghcr.io                  | ghcr.kubesre.xyz              |
-| k8s.gcr.io               | k8s-gcr.kubesre.xyz           |
-| registry.k8s.io          | k8s.kubesre.xyz               |
-| mcr.microsoft.com        | mcr.kubesre.xyz               |
-| nvcr.io                  | nvcr.kubesre.xyz              |
-| quay.io                  | quay.kubesre.xyz              |
-| registry.jujucharms.com   | jujucharms.kubesre.xyz        |
+在原镜像地址前添加 `kubesre.xyz/`：
 
-## 支持这个项目
-### 用爱发电
-我们提供的服务是免费的，但是为了维护这个项目，我们也需要花费一些精力和服务器带宽和存储费用。如果您觉得这个项目对你有帮助，欢迎您通过以下方式支持我们：
+```bash
+# 原始命令
+docker pull nginx:latest
 
-- Star 并分享 [docker-registry-mirrors](https://github.com/kubesre/docker-registry-mirrors)🚀
+# 使用镜像加速
+docker pull kubesre.xyz/docker.io/library/nginx:latest
+```
 
-- 通过以下二维码 一次性捐款，打赏作者一杯茶。🍵
-非常感谢！ ❤️
+### 方法二：配置 Docker Daemon（永久生效）
 
+编辑 `/etc/docker/daemon.json`：
 
-| 微信 | 支付宝 |
-|:--------:|:-------:|
-| <img src="https://images.gbfeng.com/images/202406191002106.png" width="200" /> | <img src="https://images.gbfeng.com/images/202406191005107.png" width="200" /> |
+```json
+{
+  "registry-mirrors": [
+    "https://kubesre.xyz"
+  ]
+}
+```
 
-**提示**
+重启 Docker：
+```bash
+sudo systemctl daemon-reload
+sudo systemctl restart docker
+```
 
-如有赞助行为，请务必添加备注，以便统一感谢！
-## 捐赠列表
-感谢给予支持的朋友，您的支持是我前进的动力 🎉
+### 方法三：支持的镜像仓库前缀替换
 
-如不慎遗漏，请多多包涵 🤝
+| 源站 | 替换为 | 示例 |
+|------|--------|------|
+| `docker.io` | `dhub.kubesre.xyz` | `dhub.kubesre.xyz/nginx:latest` |
+| `gcr.io` | `gcr.kubesre.xyz` | `gcr.kubesre.xyz/google-containers/busybox:latest` |
+| `ghcr.io` | `ghcr.kubesre.xyz` | `ghcr.kubesre.xyz/owner/repo:latest` |
+| `k8s.gcr.io` | `k8s-gcr.kubesre.xyz` | `k8s-gcr.kubesre.xyz/coredns/coredns:latest` |
+| `registry.k8s.io` | `k8s.kubesre.xyz` | `k8s.kubesre.xyz/pause:3.9` |
+| `quay.io` | `quay.kubesre.xyz` | `quay.kubesre.xyz/coreos/etcd:latest` |
+| `mcr.microsoft.com` | `mcr.kubesre.xyz` | `mcr.kubesre.xyz/dotnet/runtime:8.0` |
+| `nvcr.io` | `nvcr.kubesre.xyz` | `nvcr.kubesre.xyz/nvidia/cuda:12.2.0` |
 
-| 日期       | 用户名          | 金额   | 用户留言                                             |
-|------------|-----------------|--------|----------------------------------------------------|
-|2024-09-03 |*鱼 |     ￥55   |你是程序员的小桔灯 PS:我不上墙|
-|2024-09-02 |A*C |     ￥1  |未留言|
-|2024-09-02 |*鸡 |     ￥10  |未留言|
-|2024-08-26 |L*A |     ￥100  |感谢镜像，救我狗命|
-|2024-08-26 |*加 |     ￥36  |一片片所谓的公云镜像相继陨落时，依然看到开源的力量|
-|2024-08-22 |*祥 |     ￥10  |感谢，救我一命，希望坚持下去|
-|2024-08-07 |*创 |     ￥9.9   |感谢您提供的镜像，希望能持续下去💪|
-|2024-08-05 |**焕 |     ￥20   |未留言|
-|2024-07-19 |N*s |     ￥8.8   |作者加油呀!感谢你的docker-registry-mirrors|
-|2024-07-19 |*漾 |     ￥20   |感谢您提供的镜像服务!|
-|2024-07-18 |*建 |     ￥50   |感谢搭建希望能坚持下去!|
-|2024-07-17 |*葱 |     ￥1   |用前缀拉取docker.io的镜像，如果镜像大的话，会抛出unkown blob|
-|2024-07-02 |* |     ￥1   |未留言|
-|2024-07-02 |*鸿 |     ￥10   |感谢，搭建，希望能一直坚持！|
-|2024-06-29 |**辰 |     ￥10   |感谢！|
-|2024-06-27 |*舟 |     ￥10   |愿世界更美好|
-|2024-06-27 |*白 |     ￥1   |路小白|
-|2024-06-23 |*朋 |     ￥100   |妙法莲华，自利利他，佛菩萨也，功德无量。|
-|2024-06-18 |1*u |     ￥10   |未留言|
-|2024-06-18 |**昕 |     ￥30   |未留言|
-|2024-06-18 |*信 |     ￥20   |兄弟加油，买杯奶茶继续润！|
-|2024-06-18 |*z |     ￥1   |未留言|
-|2024-06-15 |*康 |     ￥100   |希望你们走的远一些，坚持住！|
-|2024-06-13 |王磊*站 |     ￥120   |感谢你们提供的镜像服务，极大地方便|
-|2024-06-13 |李娜的编程*         |￥85    |镜像站太棒了，解决了我多个项目的依赖问题，支持！|
-|2024-06-13 |张强*工作室       |￥200 |  镜像站的稳定性和速度都让我印象深刻，会持续关注和支持！|
-| 2024-06-12 | *圳市罗湖区犄落信息咨询工作室    | ￥99   | [xterminal.cn](https://xterminal.cn) 前来支持！         |
+---
 
-## 联系
+## 📚 完整文档
 
-<img src="https://images.gbfeng.com/images/202407171756285.png" width="200" />
+- [🏗️ 搭建自己的镜像加速仓库](dockerproxy/README.md)
+- [📋 支持的镜像仓库列表](#方法三支持的镜像仓库前缀替换)
+- [❓ 常见问题解答](#-常见问题)
+- [🤝 如何贡献](#-贡献)
 
-# 贡献者
+---
 
-<a href="https://github.com/kubesre/docker-registry-mirrors/graphs/contributors">
-  <img src="https://contrib.rocks/image?repo=kubesre/docker-registry-mirrors" />
-</a>
+## ❓ 常见问题
 
-Made with [contrib.rocks](https://contrib.rocks).
+### Q1: 镜像加速服务稳定吗？
+
+A: 我们提供**公益免费**的镜像代理服务，但由于带宽有限，建议：
+- 用于开发测试 ✅
+- 生产环境请[自建镜像仓库](dockerproxy/README.md)
+
+### Q2: 如何拉取 AI/ML 相关镜像？
+
+A: 几乎所有主流 AI/ML 镜像都支持：
+
+```bash
+# PyTorch 系列
+docker pull kubesre.xyz/pytorch/pytorch:latest
+docker pull kubesre.xyz/pytorch/pytorch:2.1.0-cuda11.8-cudnn8-runtime
+
+# TensorFlow 系列
+docker pull kubesre.xyz/tensorflow/tensorflow:latest-gpu
+
+# Jupyter 系列
+docker pull kubesre.xyz/jupyter/pytorch-notebook:latest
+
+# NVIDIA CUDA 系列
+docker pull kubesre.xyz/nvidia/cuda:12.2.0-base-ubuntu22.04
+```
+
+### Q3: 服务不可用了怎么办？
+
+A: 如果镜像加速地址失效：
+1. 检查 [GitHub Issues](https://github.com/sreyun/docker-registry-mirrors/issues) 获取最新状态
+2. 参考 [DaoCloud public-image-mirror](https://github.com/DaoCloud/public-image-mirror) 项目
+3. [自建镜像仓库](dockerproxy/README.md)（推荐生产环境使用）
+
+### Q4: 可以请求添加新的镜像吗？
+
+A: 可以！请 [创建 Issue](https://github.com/sreyun/docker-registry-mirrors/issues/new) 并标注 `sync-image`。
+
+### Q5: 服务有限制吗？
+
+A: 为了保证服务质量：
+- 当前 IP 限流 **20 请求/分钟**
+- 仅同步 **AMD64** 架构镜像
+- 如需无限制，请[自建](dockerproxy/README.md)
+
+---
+
+## 🎬 视频教程
+
+> 📺 正在制作中... 
+> 
+> 订阅我的 YouTube 频道，获取：
+> - 🤖 AI 开发工具教程
+> - 🐳 Docker/K8s 实战
+> - ☁️ 云原生技术分享
+> - 💻 DevOps 最佳实践
+
+[🔔 订阅频道](https://youtube.com/@sreyun-dev) *(即将上线)*
+
+---
+
+## 🤝 贡献
+
+欢迎提交 Issue 和 Pull Request！
+
+```bash
+# 1. Fork 本仓库
+# 2. 创建你的特性分支 (git checkout -b feature/AmazingFeature)
+# 3. 提交你的改动 (git commit -m 'Add some AmazingFeature')
+# 4. 推送到分支 (git push origin feature/AmazingFeature)
+# 5. 开启一个 Pull Request
+```
+
+---
+
+## ❤️ 支持这个项目
+
+如果你觉得这个项目对你有帮助，欢迎通过以下方式支持：
+
+### ⭐ Star 本项目
+你的 Star 是对我最大的鼓励！
+
+### 💖 GitHub Sponsors
+通过 [GitHub Sponsors](https://github.com/sponsors/sreyun) 赞助我，支持持续维护：
+- ☕ **¥10** - 请我喝杯咖啡
+- 🍵 **¥50** - 请我吃顿饭
+- 🚀 **¥100** - 支持服务器费用
+- 💎 **¥500** - 成为项目赞助商
+
+### 📧 商业合作
+如有企业定制需求，请联系：bigdatasafe@gmail.com
+
+---
+
+## 📊 项目统计
+
+![Stars](https://img.shields.io/github/stars/sreyun/docker-registry-mirrors?style=social)
+![Forks](https://img.shields.io/github/forks/sreyun/docker-registry-mirrors?style=social)
+![Issues](https://img.shields.io/github/issues/sreyun/docker-registry-mirrors)
+
+---
+
+## 📄 许可证
+
+本项目采用 [MIT License](LICENSE) 开源协议。
+
+---
+
+<div align="center">
+
+**Made with ❤️ by [Eason (sreyun)](https://github.com/sreyun)**
+
+[🐙 GitHub](https://github.com/sreyun) | [📧 Email](mailto:bigdatasafe@gmail.com) | [📺 YouTube](https://youtube.com/@sreyun-dev) | [💖 Sponsor](https://github.com/sponsors/sreyun)
+
+</div>
